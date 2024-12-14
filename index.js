@@ -1,62 +1,61 @@
-// Import the configuration from the .env file
-import 'dotenv/config'
-
-// Set up some default config values
-process.env.port = parseInt(process.env.port ?? 3000);
-
-// Import packages
-import { fileURLToPath } from 'node:url';
-import fs from 'node:fs';
+import 'dotenv/config';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+import fs from 'node:fs';
 import express from 'express';
 import { createServer } from 'node:http';
-import { Server } from 'socket.io';
+import openidconnect from 'express-openid-connect';
+import setupSocket from './socket.js';
 
-import auth from 'express-openid-connect';
-const { auth, requiresAuth } = auth;
+const { auth } = openidconnect;
 
-import Sites from './utils/sites.js';
-
-// Define some useful constants
+// Define constants
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Create an app and a Socket.io server
+// Initialize the app and server
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
 
-// Serve static files
+// Middleware for static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Auth0 integration
-// Auth0 uses the /login and /logout routes.
 app.use(auth({
     authRequired: false,
     auth0Logout: true,
     secret: process.env.auth_secret ?? (() => { throw Error('Authentication secret missing from the .env file') })(),
     baseURL: process.env.auth_base_url ?? `http://localhost:${process.env.port}`,
     clientID: process.env.auth_client_id ?? (() => { throw Error('Authentication client ID missing from the .env file') })(),
-    issuerBaseURL: process.env.auth_issuer_base_url ?? (() => { throw Error('Authentication issuer base URL missing from the .env file') })()
+    issuerBaseURL: process.env.auth_issuer_base_url ?? (() => { throw Error('Authentication issuer base URL missing from the .env file') })(),
+    routes: {
+        callback: '/api/auth/callback',
+        login: '/api/auth/login',
+        logout: '/api/auth/logout',
+        postLogoutRedirect: '/',
+    },
+    getLoginState() {
+        return {
+            returnTo: '/menu' // Return to the main menu after logging in.
+        };
+    }
 }));
 
-// Initiate Sites - A simple static HTML manager with a built-in localisation system.
-const sites = new Sites(path.join(__dirname, 'html'), 'en_GB');
-
-// Define endpoints here
-app.get('/', (req, res) => {
-    // FInd the supported locale based on the accept-language header.
-    const locale = sites.findLocale('index', req.acceptsLanguages());
-
-    res.sendFile(sites.sitePath('index', locale));
+// Use routers from ./routes
+fs.readdir(path.join(__dirname, 'routes'), (err, files) => {
+    files.forEach(async file => {
+        if (file.endsWith('.js')) {
+            const { default: { startingPath, router } } = await import(pathToFileURL(path.join(__dirname, 'routes', file)));
+            app.use(startingPath, router);
+        }
+    });
 });
 
-// User data fetching example
-app.get('/profile', requiresAuth(), (req, res) => {
-    res.send(JSON.stringify(req.oidc.user));
-});
+// Set up Socket.io
+setupSocket(server);
 
-// Listen for requests
-server.listen(process.env.port, () => {
-    console.log(`Server running at http://localhost:${process.env.port}`);
+// Start the server
+const port = parseInt(process.env.port ?? 3000);
+server.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });

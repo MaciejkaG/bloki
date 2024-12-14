@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>This is my website</title>
+    <title>Bloki - The iconic puzzle game, made an MMO.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:wght@600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
 </head>
 <body>
-    <p>Hello, World!</p>
+    <nav class="flex justify-between items-center py-2 px-4">
+        <span class="font-logo text-2xl">Bloki</span>
+        <button class="text-blue-500 px-3 py-1" onclick="window.location.href = '/api/auth/login'">Sign in</button>
+    </nav>
+
+    <div class="flex w-full h-[90vh] px-4 box-border gap-6">
+        <div class="flex-[2] flex items-center text-left">
+            <h1 class="text-center font-normal text-5xl">The iconic puzzle game, made an MMO.</h1>
+        </div>
+        <div class="flex-[3] rounded-xl overflow-hidden">
+            <video src="/assets/media/vid.mp4" autoplay muted loop class="w-full h-full object-cover"></video>
+        </div>
+    </div>
 </body>
 </html>

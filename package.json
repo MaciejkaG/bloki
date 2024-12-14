@@ -1,9 +1,27 @@
 {
+  "name": "bloki",
+  "version": "0.0.1",
+  "description": "The iconic puzzle game, made an MMO.",
+  "main": "index.js",
   "type": "module",
+  "author": "mcjk",
+  "license": "ISC",
+  "scripts": {
+    "dev": "concurrently --names \"TAILWIND,SERVER\" --prefix-colors \"cyan,yellow\" --kill-others \"npx tailwindcss -i ./global.css -o ./public/assets/css/tailwind.css --watch\" \"node index.js\"",
+    "build": "npx tailwindcss -i ./global.css -o ./public/assets/css/tailwind.css",
+    "start": "node index.js"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.13.0",
+    "tailwindcss": "^3.4.16"
+  },
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "socket.io": "^4.8.0",
-    "express-openid-connect": "^2.17.1"
+    "express-openid-connect": "^2.17.1",
+    "caniuse-lite": "^1.0.30001688"
   }
 }
