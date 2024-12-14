@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blocki - Game view</title>
+    <title>Bloki - Game view</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,13 +22,13 @@
         </div>
         <div class="flex-[2] flex items-center justify-center"> <!-- Board area container -->
             <!-- Board with border -->
-            <div class="relative w-[400px] h-[800px] rounded-[5px] overflow-hidden border-[2px] border-gray-500">
+            <div class="relative w-[400px] h-[800px] rounded-[5px] overflow-hidden ">
                 <!-- Canvas for blocks -->
                 <canvas width="400" height="800" class="w-full h-full" id="boardCanvas"></canvas>
 
                 <!-- Gradient Glow Layer -->
                 <div
-                    class="-z-10 absolute bottom-0 w-full h-20 blur-[80px] bg-gradient-to-r from-green-600 via-blue-800 to-purple-800">
+                    class="-z-10 absolute bottom-0 w-full h-32 blur-[60px] bg-gradient-to-r from-green-600 via-blue-800 to-purple-800">
                 </div>
             </div>
         </div>

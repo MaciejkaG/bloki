@@ -19,6 +19,7 @@ class GameController {
         // Position and movement
         this.currentX = Math.floor(this.cols / 2) - 2; // Start at top-center
         this.currentY = 0;
+        this.rotationState = 0; // Track rotation state (0-3)
 
         // Bind input
         document.addEventListener("keydown", (e) => this.handleInput(e));
@@ -38,49 +39,49 @@ class GameController {
         return {
             I: {
                 shape: [[1, 1, 1, 1]],
-                colour: '#42d4f5',
+                colour: '#31c0e0',
             },
             J: {
                 shape: [
                     [1, 0, 0],
                     [1, 1, 1],
                 ],
-                colour: '#184bcc',
+                colour: '#1e5ee8',
             },
             L: {
                 shape: [
                     [0, 0, 1],
                     [1, 1, 1],
                 ],
-                colour: '#eb7a23',
+                colour: '#d66e1e',
             },
             O: {
                 shape: [
                     [1, 1],
                     [1, 1],
                 ],
-                colour: '#ebe123',
+                colour: '#d1c719',
             },
             S: {
                 shape: [
                     [0, 1, 1],
                     [1, 1, 0],
                 ],
-                colour: '#2fed42',
+                colour: '#14a322',
             },
             T: {
                 shape: [
                     [0, 1, 0],
                     [1, 1, 1],
                 ],
-                colour: '#7f22e3',
+                colour: '#6324a6',
             },
             Z: {
                 shape: [
                     [1, 1, 0],
                     [0, 1, 1],
                 ],
-                colour: '#e82e2e',
+                colour: '#cf2d3e',
             },
         };
     }
@@ -246,7 +247,6 @@ class GameController {
         }
     }
 
-    // Handle input
     handleInput(event) {
         switch (event.key) {
             case "ArrowLeft":
@@ -259,7 +259,10 @@ class GameController {
                 if (this.isValidMove(this.currentPiece.shape, 0, 1)) this.currentY++;
                 break;
             case "ArrowUp":
-                this.rotatePiece();
+                this.rotatePiece(true); // Clockwise rotation
+                break;
+            case "z":
+                this.rotatePiece(false); // Counterclockwise rotation
                 break;
             case " ":
                 this.hardDrop();
@@ -268,11 +271,51 @@ class GameController {
         this.draw();
     }
 
-    rotatePiece() {
-        const rotated = this.currentPiece.shape[0].map((_, i) =>
-            this.currentPiece.shape.map((row) => row[i]).reverse()
-        );
-        if (this.isValidMove(rotated, 0, 0)) this.currentPiece.shape = rotated;
+    rotatePiece(clockwise = true) {
+        const originalShape = this.currentPiece.shape;
+
+        // Rotate the piece
+        const rotated = clockwise
+            ? this.currentPiece.shape[0].map((_, i) =>
+                this.currentPiece.shape.map((row) => row[i]).reverse()
+            )
+            : this.currentPiece.shape[0].map((_, i) =>
+                this.currentPiece.shape.map((row) => row[row.length - 1 - i]).reverse()
+            );
+
+        const kicks = [
+            [0, 0],   // No offset
+            [-1, 0],  // Left 1 cell
+            [1, 0],   // Right 1 cell
+            [0, -1],  // Up 1 cell
+            [-1, -1], // Diagonal left-up
+            [1, -1]   // Diagonal right-up
+        ];
+
+        for (const [xOffset, yOffset] of kicks) {
+            if (this.isValidMove(rotated, xOffset, yOffset)) {
+                this.currentPiece.shape = rotated;
+                this.currentX += xOffset;
+                this.currentY += yOffset;
+                return true; // Successful rotation
+            }
+        }
+
+        // If all kicks fail, reset to original
+        this.currentPiece.shape = originalShape;
+        return false;
+    }
+
+    // Wall kick offsets based on piece type and rotation state
+    getWallKickOffsets() {
+        // Simplified example offsets for demonstration
+        return [
+            [0, 0],  // No offset
+            [-1, 0], // Left 1 cell
+            [1, 0],  // Right 1 cell
+            [0, -1], // Up 1 cell
+            [-1, -1] // Diagonal left-up
+        ];
     }
 
     hardDrop() {

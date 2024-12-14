@@ -12,18 +12,20 @@ const __dirname = path.resolve();
 // Initiate Sites - A simple static HTML manager with a built-in localisation system.
 const sites = new Sites(path.join(__dirname, 'html'), 'en_GB');
 
-// Root endpoint
 router.get('/', (req, res) => {
     // Find the supported locale based on the accept-language header.
     const locale = sites.findLocale('index', req.acceptsLanguages());
     res.sendFile(sites.sitePath('index', locale));
 });
 
-// Root endpoint
 router.get('/menu', requiresAuth(), (req, res) => {
-    // Find the supported locale based on the accept-language header.
     const locale = sites.findLocale('menu', req.acceptsLanguages());
     res.sendFile(sites.sitePath('menu', locale));
+});
+
+router.get('/game', requiresAuth(), (req, res) => {
+    const locale = sites.findLocale('game', req.acceptsLanguages());
+    res.sendFile(sites.sitePath('game', locale));
 });
 
 // User profile endpoint
