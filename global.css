@@ -7,7 +7,7 @@
 
     --theme-bg: black;
     --theme-fg: white;
-    --theme-alt-bg: rgb(22, 22, 22);
+    --theme-alt-bg: rgba(15, 15, 17, 0.6);
 }
 
 body {
@@ -31,4 +31,34 @@ h2 {
 h3 {
     font-size: 1.45rem;
     font-weight: 500;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.material-symbols-outlined.fill {
+  font-variation-settings:
+  'FILL' 1,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+@keyframes SPAInAnim {
+    from { transform: scale(1.05); opacity: 0 }
+    to { transform: scale(1); opacity: 1 }
+}
+
+@keyframes SPAOutAnim {
+    from { transform: scale(1); opacity: 1 }
+    to { transform: scale(.95); opacity: 0 }
+}
+
+.tippy-box[data-theme~='bloki'] {
+    @apply bg-neutral-900 rounded-md;
 }

@@ -10,54 +10,152 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:wght@600&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <script src="/assets/lib/spa.js"></script>
 
     <link rel="stylesheet" href="/assets/css/tailwind.css">
 </head>
 <body>
-    <nav class="flex justify-between items-center py-2 px-4">
-        <span class="font-logo text-2xl">Bloki</span>
-    </nav>
+    <!-- Background -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
 
-    <div class="flex w-full px-4 box-border gap-6"> <!-- Container -->
-        <div class="flex-[3] flex flex-col gap-6"> <!-- Column -->
-            <div class="flex gap-6 h-60"> <!-- Row -->
-                <div class="relative z-0 flex-1 rounded-xl px-5 py-4 bg-gradient-to-r from-theme-alt to-black"> <!-- Tile -->
-                    <h3 class="opacity-60 mb-0 text-xl">Featured game mode</h3>
-                    <h1>FFA Marathon</h1>
-                    <img src="/assets/media/mode-bg.png" class="absolute right-0 top-0 h-full -z-10">
-                </div>
-                <div class="flex-1 rounded-xl px-5 py-4 bg-theme-alt"> <!-- Tile -->
-                    <h3 class="opacity-60 mb-0 text-xl">Featured shop items</h3>
-                    <h1>Snowman collection</h1>
-                </div>
-            </div>
-            <div class="flex gap-6"> <!-- Row -->
-                <div class="flex-1 rounded-xl px-5 py-4 bg-theme-alt"> <!-- Tile -->
-                    <h3 class="opacity-60 mb-0 text-xl">Play</h3>
-                    <h2>Game mode selection</h2>
-                </div>
-                <div class="flex-1 rounded-xl px-5 py-4 bg-theme-alt"> <!-- Tile -->
-                    <h3 class="opacity-60 mb-0 text-xl">My Bloki</h3>
-                    <h2>View your profile</h2>
-                </div>
-                <div class="flex-1 rounded-xl px-5 py-4 bg-theme-alt"> <!-- Tile -->
-                    <h3 class="opacity-60 mb-0 text-xl">Leaderboard</h3>
-                    <h2>Explore the top scores</h2>
-                </div>
-            </div>
-            <div class="h-60 rounded-xl bg-theme-alt px-5 py-4 box-border"> <!-- Row -->
-                <h3 class="opacity-60 mb-0 text-xl">Recent changes</h3>
-                <h2 class="mb-2">The 0.0.1 update</h2>
-                <p>The game is finally available in early-pre-alpha public version.</p>
+    <!-- Navbar -->
+    <nav class="bg-black/50 backdrop-blur-sm border-b border-white/10 p-3">
+        <div class=" max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <span class="font-logo text-2xl"><a href="/">Bloki</a></span>
+
+            <!-- Buttons on the right -->
+            <div class="flex items-center gap-4">
+                <button class="p-2 transition-colors duration-200 hover:bg-white/10 rounded-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined fill">notifications</span>
+                </button>
+                <button class="p-2 transition-colors duration-200 hover:bg-white/10 rounded-lg flex items-center justify-center">
+                    <span class="material-symbols-outlined fill">settings</span>
+                </button>
+                <button id="myProfile" class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></button>
             </div>
         </div>
-        <div class="flex-[1] flex flex-col"> <!-- Column -->
-            <div class="flex justify-between items-end">
-                <h2>Friends</h2>
-                <span class="flex items-center gap-2 text-sm opacity-70">
-                    Powered by <img src="https://mcjk.cc/cyber/assets/img/mcjk-id-logo.png" alt="mcjk id logo" class="h-8">
-                </span>
+    </nav>
+
+    <div class="max-w-7xl mx-auto p-6 grid grid-cols-[250px_1fr_300px] gap-6 mt-6">
+        <!-- Left Sidebar -->
+        <div class="space-y-4">
+            <div class="bg-white/5 rounded-xl p-4 space-y-2">
+                <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors" onclick="switchView('mainView')">
+                    <span class="material-symbols-outlined">home</span> Home
+                </button>
+                <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors" onclick="switchView('playView')">
+                    <span class="material-symbols-outlined">play_arrow</span> Play
+                </button>
+                <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors" onclick="switchView('shopView')">
+                    <span class="material-symbols-outlined">shopping_bag</span> Shop
+                </button>
+                <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors" onclick="switchView('leaderboardView')">
+                    <span class="material-symbols-outlined">trophy</span> Leaderboards
+                </button>
+                <!-- <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <span class="material-symbols-outlined">person</span> My profile
+                    </button> -->
             </div>
+            <p class="text-center text-sm opacity-40 hover:opacity-100 transition-opacity duration-200">
+                Bloki ver. 0.0.1<br>
+                <a href="/privacy" class="text-blue-400 underline">Privacy policy</a> / <a href="/terms" class="text-blue-400 underline">Terms of Service</a><br>
+                © 2024 mcjk
+            </p>
+        </div>
+    
+        <!-- Main Content -->
+        <div class="space-y-6 mainContent">
+            <section id="mainView" data-path="/" data-title="Bloki - The iconic puzzle game, made an MMO.">
+                <!-- Featured Game Mode -->
+                <div class="relative h-64 rounded-xl overflow-hidden group bg-white/5">
+                    <img src="/assets/media/mode-bg.png" alt="Featured Mode"
+                        class="absolute h-full right-0 bottom-0 object-cover brightness-50 group-hover:scale-105 transition-transform duration-500" />
+                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80">
+                        <h2 class="text-2xl font-bold mb-2">FFA Marathon</h2>
+                        <p class="text-gray-300 max-w-[70%]">Compete against up to 50 people. Each player plays a separate marathon
+                            game, the one who reaches the highest score wins!</p>
+                        <button class="mt-4 px-6 py-2 bg-blue-500 hover:bg-blue-600 rounded-lg transition-colors">
+                            Play Now
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Shop Preview -->
+                <div class="bg-white/5 rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4">Shop showcase</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/10 rounded-lg p-4 hover:bg-white/15 transition-colors">
+                            <div class="w-full aspect-[2] rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 mb-2"></div>
+                            <p class="font-medium">Snowmen Tetrominoes Skin Set</p>
+                            <p class="text-sm text-blue-400">2000 coins</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="shopView" data-path="/shop" data-title="Bloki - Shop">
+                <!-- Items gallery -->
+                <div class="bg-white/5 rounded-xl p-6">
+                    <h3 class="text-xl font-bold mb-4">The Snowman Collection</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-white/10 rounded-lg p-4 hover:bg-white/15 transition-colors">
+                            <div class="w-full aspect-[2] rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 mb-2"></div>
+                            <p class="font-medium">Snowmen Tetrominoes Skin Set</p>
+                            <p class="text-sm text-blue-400">2000 coins</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    
+        <!-- Right Sidebar -->
+        <div class="space-y-4">
+            <!-- Friends List -->
+            <div class="bg-white/5 rounded-xl p-4">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold">Friends</h3>
+                </div>
+                <div class="flex items-center gap-3 p-2 hover:bg-white/10 rounded-lg transition-colors">
+                    <div class="w-4 h-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-500"></div>
+                    <div>
+                        <p class="font-medium">maciej 2</p>
+                        <p class="text-xs text-gray-400">Online • Playing Marathon SP</p>
+                    </div>
+                </div>
+                <p class="text-sm opacity-60 mt-4 text-center flex flex-col justify-center items-center">Powered by <img src="https://mcjk.cc/cyber/assets/img/mcjk-id-logo.png" alt="mcjk id logo" class="h-7"></p>
+            </div>
+    
+            <!-- Recent Changes -->
+            <div class="bg-white/5 rounded-xl p-4">
+                <h3 class="font-bold mb-4">Recent Changes</h3>
+                <div class="space-y-3">
+                    <div class="text-sm">
+                        <p class="text-blue-400">New Snowman Collection</p>
+                        <p class="text-gray-400">Limited time winter themed items!</p>
+                    </div>
+                    <div class="text-sm">
+                        <p class="text-blue-400">Balance Update</p>
+                        <p class="text-gray-400">Speed adjustments in Marathon mode</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="myProfileTooltipTemplate" class="hidden">
+        <div class="flex flex-col items-center text-center text-sm p-1">
+            <span class="text-xs">Logged in as</span>
+            <span class="text-base font-bold mb-2">MaciejkaG</span>
+            <button class="text-red-400 underline" onclick="window.location.href = '/api/auth/logout'">Log out</button>
         </div>
     </div>
 

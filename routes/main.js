@@ -18,9 +18,25 @@ router.get('/', (req, res) => {
     res.sendFile(sites.sitePath('index', locale));
 });
 
+router.get('/tos', (req, res) => res.redirect('/terms'));
+router.get('/terms', (req, res) => {
+    const locale = sites.findLocale('terms', req.acceptsLanguages());
+    res.sendFile(sites.sitePath('terms', locale));
+});
+
+router.get('/privacy', (req, res) => {
+    const locale = sites.findLocale('privacy-policy', req.acceptsLanguages());
+    res.sendFile(sites.sitePath('privacy-policy', locale));
+});
+
 router.get('/menu', requiresAuth(), (req, res) => {
     const locale = sites.findLocale('menu', req.acceptsLanguages());
     res.sendFile(sites.sitePath('menu', locale));
+});
+
+// Handle redirects to SPA routes
+router.get('/menu/*', (req, res) => {
+    res.redirect('/menu/?path=' + req.originalUrl.slice('/menu'.length));
 });
 
 router.get('/game', requiresAuth(), (req, res) => {
