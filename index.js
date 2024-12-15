@@ -44,8 +44,8 @@ app.use(auth({
     session: {
         cookie: {
             domain: process.env.auth_cookie_domain, // Allow cookies to be shared across subdomains
-            sameSite: 'Lax',    // Adjust for your needs
-            secure: process.env.NODE_ENV === 'production',       // Ensure HTTPS is used
+            sameSite: 'Lax', // Adjust for your needs
+            secure: process.env.NODE_ENV === 'production', // Ensure HTTPS is used
         },
         name: 'mcjkIdSession',
     },
