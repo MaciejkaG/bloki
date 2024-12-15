@@ -23,6 +23,7 @@
     <script src="/assets/lib/helpers.js"></script>
     <script src="/assets/lib/board-controller.js"></script>
 
+    
     <link rel="stylesheet" href="/assets/css/tailwind.css">
 
     <style>
@@ -42,11 +43,58 @@
         #game.active~#mainMenu {
             pointer-events: none;
         }
+
+        #addFriendsDialogueContainer {
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        #addFriendsDialogueContainer #addFriendsDialogueWindow {
+            transform: scale(.6);
+            transition: transform 0.4s;
+        }
+
+        #addFriendsDialogueContainer.active {
+            pointer-events: initial;
+            opacity: 1;
+        }
+
+        #addFriendsDialogueContainer.active #addFriendsDialogueWindow {
+            transform: none;
+        }
     </style>
 </head>
 <body>
     <!-- Background -->
     <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
+
+    <!-- Add friend dialogue -->
+    <div id="addFriendsDialogueContainer" class="dialogueContainer fixed top-0 left-0 w-full h-full bg-gray-950/40 backdrop-blur-sm z-20 flex items-center justify-center">
+        <!-- Box -->
+        <div id="addFriendsDialogueWindow" class="bg-zinc-900/95 shadow-xl rounded-xl w-[30rem] aspect-[1.5] p-4">
+            <h2>Add friends</h2>
+            <div class="w-full h-full flex flex-col items-center justify-center">
+                <div class="text-left w-64 mx-auto my-4">
+                    <span class="block ml-1 text-white/40 text-sm">Friend's username</span>
+                    <input type="text" placeholder="john.doe_" id="addFriendUsernameInput"
+                        class="rounded-xl outline-none bg-white/10 px-2 py-1 w-full transition-all border-2 border-transparent focus:border-white/20">
+                </div>
+                <div class="flex flex-col items-stretch">
+                    <div class="flex gap-4">
+                        <div class="my-6 w-16 aspect-square rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover"></div>
+                        <div class="flex justify-center flex-col">
+                            <span class="text-2xl font-semibold">MaciejkaG</span>
+                            <span class="text-base font-thin">mcjk</span>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="w-full text-blue-400 underline px-3 py-1">Wyślij zaproszenie</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Navbar -->
     <nav class="bg-black/50 backdrop-blur-sm border-b border-white/10 p-3">
@@ -117,7 +165,7 @@
             </p>
         </div>
         <!-- Main Content -->
-        <div class="section space-y-6 mainContent">
+        <div class="section mainContent">
             <section id="mainView" data-path="/" data-title="Bloki - The iconic puzzle game, made an MMO.">
                 <!-- Featured Game Mode -->
                 <div class="relative h-64 rounded-xl overflow-hidden group bg-white/5">
@@ -137,7 +185,7 @@
                 <div class="bg-white/5 rounded-xl p-6">
                     <h3 class="text-xl font-bold mb-4">Shop showcase</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white/10 rounded-lg p-4 hover:bg-white/15 transition-colors">
+                        <div class="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                             <div class="w-full aspect-[2] rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 mb-2"></div>
                             <p class="font-medium">Snowmen Tetrominoes Skin Set</p>
                             <p class="text-sm text-blue-400">2000 coins</p>
@@ -151,7 +199,7 @@
                 <div class="bg-white/5 rounded-xl p-6">
                     <h3 class="text-xl font-bold mb-4">The Snowman Collection</h3>
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white/10 rounded-lg p-4 hover:bg-white/15 transition-colors">
+                        <div class="bg-white/5 rounded-lg p-4 hover:bg-white/10 transition-colors">
                             <div class="w-full aspect-[2] rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 mb-2"></div>
                             <p class="font-medium">Snowmen Tetrominoes Skin Set</p>
                             <p class="text-sm text-blue-400">2000 coins</p>
@@ -167,6 +215,9 @@
             <div class="bg-white/5 rounded-xl p-4">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="font-bold">Friends</h3>
+                    <button id="addFriendsButton" class="p-2 transition-colors duration-200 hover:bg-white/10 rounded-lg flex items-center justify-center">
+                        <span class="material-symbols-outlined fill">add</span>
+                    </button>
                 </div>
                 <div class="flex items-center gap-3 p-2 hover:bg-white/10 rounded-lg transition-colors">
                     <div class="w-4 h-4 rounded-full bg-gradient-to-r from-green-500 to-emerald-500"></div>

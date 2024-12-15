@@ -30,7 +30,7 @@ router.get('/setup', requiresAuth(), async (req, res) => {
     }));
 });
 
-router.post('/setup', requiresAuth(), async (req, res) => {
+router.post('/api/setup', requiresAuth(), async (req, res) => {
     if (await id.userExists(req.oidc.user.sub)) { // If user is already set up.
         res.sendStatus(403);
         return;
@@ -51,6 +51,58 @@ router.post('/setup', requiresAuth(), async (req, res) => {
     res.status(201).json({ message: "User setup successful." });
 });
 
+router.get('/api/my-profile', requiresAuth(), id.requiresId(), async (req, res) => {
+    const user = await id.getUser(req.oidc.user.sub);
+    res.send({
+        ...user,
+        email: req.oidc.user.email,
+        email_verified: req.oidc.user.email_verified,
+        picture: req.oidc.user.picture,
+    });
+});
 
+router.get('/api/my-friends', requiresAuth(), id.requiresId(), async (req, res) => {
+    const friends = await id.getFriends(req.oidc.user.sub);
+    res.send(friends);
+});
+
+router.post('/api/send-friend-request', requiresAuth(), id.requiresId(), async (req, res) => {
+    const userId = req.oidc.user.sub; // Authenticated user's ID
+    const { friendUsername } = req.body; // Friend's username
+
+    try {
+        await id.inviteToFriends(userId, friendUsername);
+        return res.status(200).send({ message: 'Friend request sent successfully.' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ error: 'Unable to send friend request.' });
+    }
+});
+
+router.post('/api/accept-friend-request', requiresAuth(), id.requiresId(), async (req, res) => {
+    const userId = req.oidc.user.sub; // Authenticated user's ID
+    const { friendUsername } = req.body; // Friend's username
+
+    try {
+        await id.acceptFriendship(userId, friendUsername);
+        return res.status(200).send({ message: 'Friend request accepted successfully.' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ error: 'Unable to accept friend request.' });
+    }
+});
+
+router.post('/api/remove-friend', requiresAuth(), id.requiresId(), async (req, res) => {
+    const userId = req.oidc.user.sub; // Authenticated user's ID
+    const { friendUsername } = req.body; // Friend's username
+
+    try {
+        await id.removeFriendship(userId, friendUsername);
+        return res.status(200).send({ message: 'Friendship removed successfully.' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ error: 'Unable to remove friendship.' });
+    }
+});
 
 export default { startingPath: '/id', router }; // Passing the starting path of the router here.

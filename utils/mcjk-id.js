@@ -126,6 +126,151 @@ export default class {
 
         return true;
     }
+
+    // This method gets the user data from mcjk id.
+    async getUser(userId) {
+        const conn = await mysql.createConnection(this.mysqlOptions);
+        let results;
+        try {
+            [results] = await conn.query(`SELECT created_at, display_name, user_name FROM users WHERE user_id = ?;`, [userId]);
+        } catch (error) {
+            console.error('Error while querying the databse: ', error);
+            await conn.end();
+            return { success: false, message: 'Internal database error' };
+        }
+
+        await conn.end();
+
+        if (results.length) return { success: true, ...results[0] };
+        else return { success: false, message: "User doesn't exist" };
+    }
+    
+    // This gets the friends list of a user and friend requests associated with them.
+    async getFriends(userId) {
+        const friendsListQuery = `
+            SELECT (
+                    CASE
+                        WHEN f.user1 = ? THEN f.user2
+                        ELSE f.user1
+                    END
+                ) AS friend_id,
+                u.display_name
+            FROM friendships f
+                JOIN users u ON (
+                    CASE
+                        WHEN f.user1 = ? THEN f.user2
+                        ELSE f.user1
+                    END
+                ) = u.user_id
+            WHERE f.active_since IS NOT NULL
+                AND (
+                    user1 = ?
+                    OR user2 = ?
+                );
+        `;
+
+        const friendRequestsQuery = `
+            SELECT (
+                    CASE
+                        WHEN f.user1 = ? THEN f.user2
+                        ELSE f.user1
+                    END
+                ) AS user_id,
+                u.display_name,
+                (
+                    CASE
+                        WHEN f.user1 = ? THEN 0
+                        ELSE 1
+                    END
+                ) AS incoming
+            FROM friendships f
+                JOIN users u ON (
+                    CASE
+                        WHEN f.user1 = ? THEN f.user2
+                        ELSE f.user1
+                    END
+                ) = u.user_id
+            WHERE f.active_since IS NULL
+                AND (
+                    f.user1 = ?
+                    OR f.user2 = ?
+                )
+            ORDER BY incoming DESC;
+        `;
+
+        const conn = await mysql.createConnection(this.mysqlOptions);
+        try {
+            const [friends] = await conn.query(friendsListQuery, [userId, userId, userId, userId]);
+            const [requests] = await conn.query(friendRequestsQuery, [userId, userId, userId, userId, userId, userId]);
+
+            await conn.end();
+            return { friends, requests };
+        } catch (error) {
+            console.error('Error while querying the database: ', error);
+
+            await conn.end();
+            throw new Error('Unable to fetch friends and requests.');
+        }
+    }
+
+    // This removes a friendship.
+    async removeFriendship(userId, friendUsername) {
+        const conn = await mysql.createConnection(this.mysqlOptions);
+        try {
+            await conn.query(`
+            DELETE FROM friendships 
+            WHERE (user1 = ? AND user2 = (SELECT user_id FROM users WHERE user_name = ? LIMIT 1))
+               OR (user2 = ? AND user1 = (SELECT user_id FROM users WHERE user_name = ? LIMIT 1));
+        `, [userId, friendUsername, userId, friendUsername]);
+
+            await conn.end();
+        } catch (error) {
+            console.error('Error while querying the database: ', error);
+            await conn.end();
+            throw new Error('Unable to remove friendship.');
+        }
+    }
+
+    // This allows a user to accept a friend request sent by another user.
+    async acceptFriendship(userId, friendUsername) {
+        const conn = await mysql.createConnection(this.mysqlOptions);
+        try {
+            await conn.query(`
+            UPDATE friendships 
+            SET active = 1 
+            WHERE user1 = (SELECT user_id FROM users WHERE user_name = ? LIMIT 1) AND user2 = ?;
+        `, [friendUsername, userId]);
+
+            await conn.end();
+        } catch (error) {
+            console.error('Error while querying the database: ', error);
+            await conn.end();
+            throw new Error('Unable to accept friendship.');
+        }
+    }
+
+    // This allows sending friend requests.
+    async inviteToFriends(userId, friendUsername) {
+        const conn = await mysql.createConnection(this.mysqlOptions);
+        try {
+            await conn.query(`
+            INSERT INTO friendships (user1, user2)
+            SELECT ?, (SELECT user_id FROM users WHERE user_name = ? LIMIT 1)
+            WHERE NOT EXISTS (
+                SELECT 1 
+                FROM friendships 
+                WHERE (user1 = ? AND user2 = (SELECT user_id FROM users WHERE user_name = ? LIMIT 1))
+                   OR (user1 = (SELECT user_id FROM users WHERE user_name = ? LIMIT 1) AND user2 = ?)
+            );
+        `, [userId, friendUsername, userId, friendUsername, friendUsername, userId]);
+
+            await conn.end();
+        } catch (error) {
+            console.error('Error while querying the database: ', error);
+            await conn.end();
+            throw new Error('Unable to send friend request.');
+        }
+    }
 }
 
 function stringInRange(str, rangeStart, rangeEnd) {

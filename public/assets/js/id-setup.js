@@ -17,7 +17,7 @@ const usernameField = document.getElementById('usernameInput');
 const doneButton = document.getElementById('doneButton');
 
 doneButton.addEventListener('click', async () => {
-    const result = await post('/id/setup', { displayName: displayNameField.value, username: usernameField.value });
+    const result = await post('/id/api/setup', { displayName: displayNameField.value, username: usernameField.value });
     switch (result.status) {
         case 201:
             window.location.href = '/menu';

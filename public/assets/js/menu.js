@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const req = await get('/api/my-profile');
+    const req = await get('/id/api/my-profile');
     const data = await req.json();
 
     $('#myProfile').css('background-image', `url('${data.picture}')`);
-    $('.myNickname').text(data.nickname);
+    $('.myNickname').text(data.display_name);
 
     const template = document.getElementById('myProfileTooltipTemplate');
     tippy('#myProfile', {
@@ -16,6 +16,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
+// Adding friends
+$('#addFriendsButton').on('click', function () {
+    $('#addFriendsDialogueContainer').toggleClass('active');
+});
+
+const dialogueContainer = document.getElementById('addFriendsDialogueContainer');
+dialogueContainer.addEventListener('click', (e) => {
+    if (e.target === dialogueContainer)
+        $('#addFriendsDialogueContainer').toggleClass('active');
+});
+
+// Game view management
 const mainMenuFadeOutAnimaton = {
     targets: '#mainMenu div.section',
     scale: [1, 0.8],
