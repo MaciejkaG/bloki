@@ -61,12 +61,25 @@ router.get('/api/my-profile', requiresAuth(), id.requiresId(), async (req, res) 
     });
 });
 
+router.get('/api/get-user', requiresAuth(), id.requiresId(), async (req, res) => {
+    const user = await id.getUserByUsername(req.query.username);
+    if (!user.success && user.message === "User doesn't exist") {
+        res.sendStatus(404);
+        return;
+    } else if (!user.success) {
+        res.sendStatus(500);
+        return;
+    }
+
+    res.send(user);
+});
+
 router.get('/api/my-friends', requiresAuth(), id.requiresId(), async (req, res) => {
     const friends = await id.getFriends(req.oidc.user.sub);
     res.send(friends);
 });
 
-router.post('/api/send-friend-request', requiresAuth(), id.requiresId(), async (req, res) => {
+router.post('/api/send-friend-invite', requiresAuth(), id.requiresId(), async (req, res) => {
     const userId = req.oidc.user.sub; // Authenticated user's ID
     const { friendUsername } = req.body; // Friend's username
 
@@ -79,7 +92,7 @@ router.post('/api/send-friend-request', requiresAuth(), id.requiresId(), async (
     }
 });
 
-router.post('/api/accept-friend-request', requiresAuth(), id.requiresId(), async (req, res) => {
+router.post('/api/accept-friend-invite', requiresAuth(), id.requiresId(), async (req, res) => {
     const userId = req.oidc.user.sub; // Authenticated user's ID
     const { friendUsername } = req.body; // Friend's username
 

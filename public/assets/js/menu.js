@@ -27,6 +27,85 @@ dialogueContainer.addEventListener('click', (e) => {
         $('#addFriendsDialogueContainer').toggleClass('active');
 });
 
+let typingTimer; // Timer identifier
+const typingDelay = 500; // Time in ms (500ms delay)
+
+const addFriendInput = document.getElementById('addFriendUsernameInput');
+const sendButton = document.getElementById('sendFriendInviteButton');
+
+const incorrectValue = () => {
+    const shakeOffset = 300;
+    const shakeDuration = 65;
+    anime({
+        targets: addFriendInput,
+        translateX: [
+            { value: -shakeOffset, duration: shakeDuration },
+            { value: shakeOffset, duration: shakeDuration },
+            { value: -shakeOffset, duration: shakeDuration },
+            { value: shakeOffset, duration: shakeDuration },
+            { value: 0, duration: shakeDuration }
+        ],
+        easing: 'easeInOutQuad'
+    });
+};
+
+const sentAnimation = () => {
+    anime({
+        targets: sendButton,
+        translateX: [0, -50],
+        opacity: [1, 0],
+        easing: 'easeInExpo',
+        duration: 100,
+        complete: () => {
+            sendButton.textContent = window.locale.friendInviteSent;
+            sendButton.classList.add('sent');
+            anime({
+                targets: sendButton,
+                translateX: [50, 0],
+                opacity: [0, 1],
+                easing: 'easeOutExpo',
+                duration: 100,
+            });
+        }
+    });
+};
+
+const resetSentStatus = () => {
+    sendButton.textContent = window.locale.sendInvite;
+    sendButton.classList.remove('sent');
+};
+
+sendButton.addEventListener('click', async () => {
+    const res = await post('/id/api/send-friend-invite', { friendUsername: addFriendInput.value });
+    if (res.status === 200) {
+        sentAnimation();
+    } else {
+        alert(`An error occured: ${res.status}\nCheck console for more info`);
+    }
+});
+
+addFriendInput.addEventListener('input', () => {
+    $('#addFriendsProfilePreview').removeClass('active');
+    clearTimeout(typingTimer); // Clear the previous timer
+    typingTimer = setTimeout(async () => {
+        resetSentStatus();
+        if (addFriendInput.value.length < 2) {
+            incorrectValue();
+            return;
+        };
+
+        const res = await get(`/id/api/get-user?username=${encodeURIComponent(addFriendInput.value)}`);
+        if (res.status !== 200) {
+            incorrectValue();
+            return;
+        }
+        const data = await res.json();
+        $('#addFriendsProfilePreviewDisplayName').text(data.display_name);
+        $('#addFriendsProfilePreviewUsername').text(data.user_name);
+        $('#addFriendsProfilePreview').addClass('active');
+    }, typingDelay);
+});
+
 // Game view management
 const mainMenuFadeOutAnimaton = {
     targets: '#mainMenu div.section',

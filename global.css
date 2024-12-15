@@ -62,3 +62,62 @@ h3 {
 .tippy-box[data-theme~='bloki'] {
     @apply bg-neutral-900 rounded-md;
 }
+
+/* main menu styles */
+#game {
+    transform: scale(.8);
+    pointer-events: none;
+    opacity: 0;
+    transition: transform 0.5s, pointer-events 0.5s, opacity 0.5s;
+}
+
+#game.active {
+    transform: none;
+    pointer-events: initial;
+    opacity: 1;
+}
+
+#game.active~#mainMenu {
+    pointer-events: none;
+}
+
+#addFriendsDialogueContainer {
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+
+    #addFriendsDialogueContainer #addFriendsDialogueWindow {
+    transform: scale(.6);
+    transition: transform 0.4s;
+}
+
+#addFriendsDialogueContainer.active {
+    pointer-events: initial;
+    opacity: 1;
+}
+
+#addFriendsDialogueContainer.active #addFriendsDialogueWindow {
+    transform: none;
+}
+
+#addFriendsProfilePreview {
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10%);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+#addFriendsProfilePreview.active {
+    pointer-events: initial;
+    opacity: 1;
+    transform: none;
+}
+
+#sendFriendInviteButton {
+    @apply text-blue-400 underline;
+}
+
+#sendFriendInviteButton.sent {
+    @apply text-green-400 no-underline pointer-events-none;
+}

@@ -144,6 +144,24 @@ export default class {
         if (results.length) return { success: true, ...results[0] };
         else return { success: false, message: "User doesn't exist" };
     }
+
+    async getUserByUsername(username) {
+        username = username.toLowerCase();
+        const conn = await mysql.createConnection(this.mysqlOptions);
+        let results;
+        try {
+            [results] = await conn.query(`SELECT created_at, display_name, user_name FROM users WHERE user_name = ?;`, [username]);
+        } catch (error) {
+            console.error('Error while querying the databse: ', error);
+            await conn.end();
+            return { success: false, message: 'Internal database error' };
+        }
+
+        await conn.end();
+
+        if (results.length) return { success: true, ...results[0] };
+        else return { success: false, message: "User doesn't exist" };
+    }
     
     // This gets the friends list of a user and friend requests associated with them.
     async getFriends(userId) {
