@@ -17,6 +17,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = createServer(app);
 
+// Trust the proxy in production
+app.set('trust proxy', process.env.NODE_ENV === 'production' ? 1 : 0);
+
 // Middleware for static files
 app.use(express.static(path.join(__dirname, 'public')));
 
