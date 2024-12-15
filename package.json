@@ -7,7 +7,7 @@
   "author": "mcjk",
   "license": "ISC",
   "scripts": {
-    "dev": "concurrently --names \"TAILWIND,SERVER\" --prefix-colors \"cyan,yellow\" --kill-others \"npx tailwindcss -i ./global.css -o ./public/assets/css/tailwind.css --watch\" \"node index.js\"",
+    "dev": "concurrently --names \"TAILWIND,SERVER\" --prefix-colors \"cyan,yellow\" --kill-others \"npx tailwindcss -i ./global.css -o ./public/assets/css/tailwind.css --watch\" \"nodemon index.js\"",
     "build": "npx tailwindcss -i ./global.css -o ./public/assets/css/tailwind.css",
     "start": "node index.js"
   },

@@ -19,6 +19,7 @@
     <script src="https://unpkg.com/tippy.js@6"></script>
 
     <script src="/assets/lib/spa.js"></script>
+    <script src="/assets/lib/helpers.js"></script>
 
     <link rel="stylesheet" href="/assets/css/tailwind.css">
 </head>
@@ -40,7 +41,7 @@
                 <button class="p-2 transition-colors duration-200 hover:bg-white/10 rounded-lg flex items-center justify-center">
                     <span class="material-symbols-outlined fill">settings</span>
                 </button>
-                <button id="myProfile" class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500"></button>
+                <button id="myProfile" class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover"></button>
             </div>
         </div>
     </nav>
@@ -154,7 +155,7 @@
     <div id="myProfileTooltipTemplate" class="hidden">
         <div class="flex flex-col items-center text-center text-sm p-1">
             <span class="text-xs">Logged in as</span>
-            <span class="text-base font-bold mb-2">MaciejkaG</span>
+            <span class="text-base font-bold mb-2 myNickname"></span>
             <button class="text-red-400 underline" onclick="window.location.href = '/api/auth/logout'">Log out</button>
         </div>
     </div>
