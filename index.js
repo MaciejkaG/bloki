@@ -38,6 +38,14 @@ app.use(auth({
         logout: '/api/auth/logout',
         postLogoutRedirect: '/',
     },
+    session: {
+        cookie: {
+            domain: process.env.auth_cookie_domain, // Allow cookies to be shared across subdomains
+            sameSite: 'Lax',    // Adjust for your needs
+            secure: process.env.NODE_ENV === 'production',       // Ensure HTTPS is used
+        },
+        name: 'mcjkIdSession',
+    },
     getLoginState() {
         return {
             returnTo: '/menu' // Return to the main menu after logging in.
