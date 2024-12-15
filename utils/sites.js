@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import mustache from 'mustache';
 
 export default class Sites {
     constructor(sitesPath, defaultLocale) {
@@ -29,5 +30,24 @@ export default class Sites {
         }
 
         return this.defaultLocale;
+    }
+
+    render(siteName, locales, hooks) {
+        try {
+            const locale = this.findLocale(siteName, locales);
+            const path = this.sitePath(siteName, locale);
+
+            // Read the file contents
+            const fileContents = fs.readFileSync(path, 'utf8');
+
+            // Render the content with Mustache
+            const renderedContent = mustache.render(fileContents, hooks);
+
+            // Return the rendered content
+            return renderedContent;
+        } catch (error) {
+            console.error(`Error rendering file: ${error.message}`);
+            throw error;
+        }
     }
 }

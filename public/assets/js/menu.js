@@ -15,3 +15,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         theme: 'bloki',
     });
 });
+
+const mainMenuFadeOutAnimaton = {
+    targets: '#mainMenu div.section',
+    scale: [1, 0.8],
+    opacity: [1, 0],
+
+    easing: 'easeInOutQuad',
+    duration: 500,
+    delay: anime.stagger(100, { from: 'center', direction: 'reverse' }),
+    complete: () => {
+        $('#game').addClass('active');
+    }
+};
+let game;
+
+let gameViewEnabled = false;
+function toggleGameView() {
+    if (gameViewEnabled) {
+        // Stop the game
+        game?.destroy();
+
+        $('#game').removeClass('active');
+        setTimeout(() => {
+            anime({
+                ...mainMenuFadeOutAnimaton,
+                direction: 'reverse',
+                delay: 0,
+                complete: null,
+            });
+        }, 500);
+    } else {
+        game = new GameController('boardCanvas');
+
+        anime(mainMenuFadeOutAnimaton);
+    }
+
+    gameViewEnabled = !gameViewEnabled;
+}

@@ -15,13 +15,34 @@
     <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="/assets/lib/anime.min.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
 
     <script src="/assets/lib/spa.js"></script>
     <script src="/assets/lib/helpers.js"></script>
+    <script src="/assets/lib/board-controller.js"></script>
 
     <link rel="stylesheet" href="/assets/css/tailwind.css">
+
+    <style>
+        #game {
+            transform: scale(.8);
+            pointer-events: none;
+            opacity: 0;
+            transition: transform 0.5s, pointer-events 0.5s, opacity 0.5s;
+        }
+
+        #game.active {
+            transform: none;
+            pointer-events: initial;
+            opacity: 1;
+        }
+
+        #game.active~#mainMenu {
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
     <!-- Background -->
@@ -46,9 +67,32 @@
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto p-6 grid grid-cols-[250px_1fr_300px] gap-6 mt-6">
+    <!-- Game view -->
+    <div id="game" class="absolute w-full h-full top-0 left-0 flex">
+        <div class="flex-[3]">
+    
+        </div>
+        <div class="flex-[2] flex items-center justify-center"> <!-- Board area container -->
+            <!-- Board with border -->
+            <div class="relative w-[400px] h-[800px] rounded-[5px] overflow-hidden ">
+                <!-- Canvas for blocks -->
+                <canvas width="400" height="800" class="w-full h-full" id="boardCanvas"></canvas>
+    
+                <!-- Gradient Glow Layer -->
+                <div
+                    class="-z-10 absolute bottom-0 w-full h-32 blur-[60px] bg-gradient-to-r from-green-600 via-blue-800 to-purple-800">
+                </div>
+            </div>
+        </div>
+        <div class="flex-[3]">
+    
+        </div>
+    </div>
+
+    <!-- Main menu content -->
+    <div id="mainMenu" class="max-w-7xl mx-auto p-6 grid grid-cols-[250px_1fr_300px] gap-6 mt-6">
         <!-- Left Sidebar -->
-        <div class="space-y-4">
+        <div class="section space-y-4 ">
             <div class="bg-white/5 rounded-xl p-4 space-y-2">
                 <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-white/10 transition-colors" onclick="switchView('mainView')">
                     <span class="material-symbols-outlined">home</span> Home
@@ -68,13 +112,12 @@
             </div>
             <p class="text-center text-sm opacity-40 hover:opacity-100 transition-opacity duration-200">
                 Bloki ver. 0.0.1<br>
-                <a href="/privacy" class="text-blue-400 underline">Privacy policy</a> / <a href="/terms" class="text-blue-400 underline">Terms of Service</a><br>
+                <a href="/terms" class="text-blue-400 underline">Terms of Service</a> / <a href="/privacy" class="text-blue-400 underline">Privacy Policy</a><br>
                 © 2024 mcjk
             </p>
         </div>
-    
         <!-- Main Content -->
-        <div class="space-y-6 mainContent">
+        <div class="section space-y-6 mainContent">
             <section id="mainView" data-path="/" data-title="Bloki - The iconic puzzle game, made an MMO.">
                 <!-- Featured Game Mode -->
                 <div class="relative h-64 rounded-xl overflow-hidden group bg-white/5">
@@ -119,7 +162,7 @@
         </div>
     
         <!-- Right Sidebar -->
-        <div class="space-y-4">
+        <div class="section space-y-4">
             <!-- Friends List -->
             <div class="bg-white/5 rounded-xl p-4">
                 <div class="flex items-center justify-between mb-4">

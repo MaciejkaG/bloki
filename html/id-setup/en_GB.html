@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloki - The iconic puzzle game, made an MMO.</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Poppins:wght@600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <script src="/assets/lib/helpers.js"></script>
+
+    <link rel="stylesheet" href="/assets/css/tailwind.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
+
+    <!-- Navbar -->
+    <nav class="bg-black/50 backdrop-blur-sm border-b border-white/10 p-3">
+        <div class=" max-w-6xl mx-auto flex justify-between items-center">
+            <!-- Logo -->
+            <span class="font-logo text-2xl">Bloki</span>
+    
+            <!-- Buttons on the right -->
+            <div class="flex items-center gap-4">
+                <img src="https://mcjk.cc/cyber/assets/img/mcjk-id-logo.png" alt="mcjk id logo" class="h-8">
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="max-w-3xl mx-auto p-6 mt-6 text-center">
+        <h3>Profile setup</h3>
+        <p>Data will be synced across all apps using mcjk id.</p>
+        <div class="mx-auto my-6 w-24 aspect-square rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover" style="background-image: url('{{ picture }}');"></div>
+        <div class="text-left w-64 mx-auto my-4">
+            <span class="block ml-1 text-white/40 text-sm">Display name</span>
+            <input type="text" id="displayNameInput" value="{{ nickname }}"
+                class="rounded-xl outline-none bg-white/10 px-2 py-1 w-full transition-all border-2 border-transparent focus:border-white/20">
+        </div>
+
+        <div class="text-left w-64 mx-auto my-4">
+            <span class="block ml-1 text-white/40 text-sm">Username</span>
+            <input type="text" id="usernameInput"
+                class="rounded-xl outline-none bg-white/10 px-2 py-1 w-full transition-all border-2 border-transparent focus:border-white/20">
+        </div>
+        <button id="doneButton" class="w-64 text-blue-400 underline px-3 py-1">
+            Done
+        </button>
+        <p id="errorText" class="text-red-400 text-sm transition-all duration-200" style="transform: translateY(20%); opacity: 0;">The username is incorrect.</p>
+    </div>
+
+    <div id="usernameTooltipTemplate" class="hidden">
+        <p>
+            The username must:
+            <ul class="list-disc ml-4">
+                <li>Be unique;</li>
+                <li>Fit in the range of 2-32 characters;</li>
+                <li>Consist exclusively of: alphanumerical characters, hyphens, underscores and dots.</li>
+            </ul>
+            The username is case-insensitive. Other users will be able to look you up through your username.
+        </p>
+    </div>
+
+    <div id="displayNameTooltipTemplate" class="hidden">
+        <p>
+            The display name must:
+            <ul class="list-disc ml-4">
+                <li>Fit in the range of 1-32 characters.</li>
+            </ul>
+            The display name will be the main way you appear to other users.
+        </p>
+    </div>
+
+    <script>
+        window.locale = {
+            'username-length/characters': 'The username\'s length or characters used are incorrect.',
+            'username-duplicate': 'This username is taken.',
+            'displayName-length': 'The display name\'s length is incorrect.',
+        };
+    </script>
+
+    <script src="/assets/js/id-setup.js"></script>
+</body>
+</html>

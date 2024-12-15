@@ -20,6 +20,10 @@ const server = createServer(app);
 // Middleware for static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Useful parsing middleware
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Auth0 integration
 app.use(auth({
     authRequired: false,

@@ -3,10 +3,17 @@ import Sites from '../utils/sites.js';
 import openidconnect from 'express-openid-connect';
 const { requiresAuth } = openidconnect;
 import path from 'node:path';
+import mcjk_id from '../utils/mcjk-id.js';
+
+const id = new mcjk_id({
+    host: process.env.id_db_host,
+    user: process.env.id_db_user,
+    password: process.env.id_db_password,
+    database: process.env.id_db_dbname,
+});
 
 const router = express.Router();
 
-// Define some useful constants
 const __dirname = path.resolve();
 
 // Initiate Sites - A simple static HTML manager with a built-in localisation system.
@@ -29,7 +36,7 @@ router.get('/privacy', (req, res) => {
     res.sendFile(sites.sitePath('privacy-policy', locale));
 });
 
-router.get('/menu', requiresAuth(), (req, res) => {
+router.get('/menu', requiresAuth(), id.requiresId(), (req, res) => {
     const locale = sites.findLocale('menu', req.acceptsLanguages());
     res.sendFile(sites.sitePath('menu', locale));
 });
@@ -37,11 +44,6 @@ router.get('/menu', requiresAuth(), (req, res) => {
 // Handle redirects to SPA routes
 router.get('/menu/*', (req, res) => {
     res.redirect('/menu/?path=' + req.originalUrl.slice('/menu'.length));
-});
-
-router.get('/game', requiresAuth(), (req, res) => {
-    const locale = sites.findLocale('game', req.acceptsLanguages());
-    res.sendFile(sites.sitePath('game', locale));
 });
 
 // User profile endpoint

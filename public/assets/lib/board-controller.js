@@ -356,4 +356,15 @@ class GameController {
         this.isRunning = false; // Reset running flag
         this.gameLoop();
     }
+
+    // This method stops the engine and clears the canvas.
+    destroy() {
+        // Stop the game loop
+        this.gameLoopTimeouts.forEach((timeout) => clearTimeout(timeout));
+        this.gameLoopTimeouts = [];
+        this.isRunning = false; // Reset running flag
+
+        // Clear the canvas
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
 }
