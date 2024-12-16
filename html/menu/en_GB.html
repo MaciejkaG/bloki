@@ -33,18 +33,18 @@
     <!-- Add friend dialogue -->
     <div id="addFriendsDialogueContainer" class="dialogueContainer fixed top-0 left-0 w-full h-full bg-gray-950/40 backdrop-blur-sm z-20 flex items-center justify-center">
         <!-- Box -->
-        <div id="addFriendsDialogueWindow" class="bg-zinc-900/95 shadow-xl rounded-xl w-[40rem] aspect-[1.8] p-4">
-            <div class="flex gap-4 h-full">
-                <div class="flex-1 flex flex-col items-center">
+        <div id="addFriendsDialogueWindow" class="bg-zinc-900 shadow-xl rounded-xl w-[40rem] aspect-[1.8] p-4">
+            <div class="flex h-full">
+                <div class="w-2/5 flex flex-col items-center pr-3 box-border">
                     <h3 class="text-center">Add friends</h3>
                     <div class="text-left w-full mx-auto my-4">
                         <span class="block ml-1 text-white/40 text-sm">Friend's username</span>
                         <input type="text" placeholder="john.doe_" id="addFriendUsernameInput"
                             class="rounded-xl outline-none bg-white/10 px-2 py-1 w-full transition-all border-2 border-transparent focus:border-white/20">
                     </div>
-                    <div id="addFriendsProfilePreview" class="flex flex-col items-stretch mt-auto mb-4">
+                    <div id="addFriendsProfilePreview" class="flex flex-col items-stretch my-auto">
                         <div class="flex gap-4">
-                            <div class="my-6 w-16 aspect-square rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover">
+                            <div class="my-6 w-16 aspect-square rounded-full bg-gradient-profile bg-cover">
                             </div>
                             <div class="flex justify-center flex-col">
                                 <span id="addFriendsProfilePreviewDisplayName" class="text-2xl font-semibold"></span>
@@ -56,9 +56,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex-1 border-l-2 border-l-zinc-500">
+                <div class="w-3/5 border-l-2 border-l-zinc-500 pl-3 box-border">
                     <h3 class="text-center">Friend requests</h3>
-                    <div class="flex">
+                    <!-- Request list -->
+                    <div id="friendRequests" class="flex flex-col pt-2 overflow-x-hidden overflow-y-scroll">
+                        <!-- Requests are here -->
                         
                     </div>
                 </div>
@@ -80,7 +82,7 @@
                 <button class="p-2 transition-colors duration-200 hover:bg-white/10 rounded-lg flex items-center justify-center">
                     <span class="material-symbols-outlined fill">settings</span>
                 </button>
-                <button id="myProfile" class="w-8 h-8 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover"></button>
+                <button id="myProfile" class="w-8 h-8 rounded-full"></button>
             </div>
         </div>
     </nav>
@@ -212,6 +214,39 @@
                         <p class="text-gray-400">Speed adjustments in Marathon mode</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="outgoingFriendRequestTemplate" class="hidden">
+        <div class="relative h-14 flex gap-2 px-2 group">
+            <div class="h-full aspect-square rounded-full bg-gradient-profile bg-cover"></div>
+            <div class="flex-[1] w-full flex flex-col justify-center">
+                <span class="text-base font-semibold max-w-64 text-ellipsis overflow-hidden whitespace-nowrap break-all">[[ displayname ]]</span>
+                <span class="text-sm font-thin max-w-64 text-ellipsis overflow-hidden whitespace-nowrap break-all">[[ username ]]</span>
+                <span class="text-sm font-light text-blue-500">outgoing</span>
+            </div>
+            <div
+                class="absolute right-0 top-0 h-full w-16 flex justify-end items-center bg-gradient-to-l from-zinc-900 to-transparent transition-all duration-200 opacity-0 translate-x-6 group-hover:opacity-100 group-hover:translate-x-0">
+                <button class="flex items-center justify-center"><span
+                        class="material-symbols-outlined text-red-400">close</span></button>
+            </div>
+        </div>
+    </div>
+    <div id="incomingFriendRequestTemplate">
+        <div class="relative h-14 flex gap-2 px-2 group">
+            <div class="h-full aspect-square rounded-full bg-gradient-profile bg-cover"></div>
+            <div class="flex-[1] w-full flex flex-col justify-center">
+                <span class="text-base font-semibold max-w-64 text-ellipsis overflow-hidden whitespace-nowrap break-all">[[ displayname ]]</span>
+                <span class="text-sm font-thin max-w-64 text-ellipsis overflow-hidden whitespace-nowrap break-all">[[ username ]]</span>
+                <span class="text-sm font-light text-green-500">incoming</span>
+            </div>
+            <div
+                class="absolute right-0 top-0 h-full w-16 flex gap-2 justify-end items-center bg-gradient-to-l from-zinc-900 to-transparent transition-all duration-200 opacity-0 translate-x-6 group-hover:opacity-100 group-hover:translate-x-0">
+                <button class="flex items-center justify-center"><span
+                        class="material-symbols-outlined text-green-400">check</span></button>
+                <button class="flex items-center justify-center"><span
+                        class="material-symbols-outlined text-red-400">close</span></button>
             </div>
         </div>
     </div>

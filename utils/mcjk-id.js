@@ -166,13 +166,9 @@ export default class {
     // This gets the friends list of a user and friend requests associated with them.
     async getFriends(userId) {
         const friendsListQuery = `
-            SELECT (
-                    CASE
-                        WHEN f.user1 = ? THEN f.user2
-                        ELSE f.user1
-                    END
-                ) AS friend_id,
-                u.display_name
+            SELECT
+                u.display_name,
+                u.user_name
             FROM friendships f
                 JOIN users u ON (
                     CASE
@@ -188,13 +184,9 @@ export default class {
         `;
 
         const friendRequestsQuery = `
-            SELECT (
-                    CASE
-                        WHEN f.user1 = ? THEN f.user2
-                        ELSE f.user1
-                    END
-                ) AS user_id,
+            SELECT
                 u.display_name,
+                u.user_name,
                 (
                     CASE
                         WHEN f.user1 = ? THEN 0
@@ -218,8 +210,8 @@ export default class {
 
         const conn = await mysql.createConnection(this.mysqlOptions);
         try {
-            const [friends] = await conn.query(friendsListQuery, [userId, userId, userId, userId]);
-            const [requests] = await conn.query(friendRequestsQuery, [userId, userId, userId, userId, userId, userId]);
+            const [friends] = await conn.query(friendsListQuery, [userId, userId, userId]);
+            const [requests] = await conn.query(friendRequestsQuery, [userId, userId, userId, userId, userId]);
 
             await conn.end();
             return { friends, requests };

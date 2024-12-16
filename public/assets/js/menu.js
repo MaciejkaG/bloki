@@ -14,6 +14,47 @@ document.addEventListener('DOMContentLoaded', async () => {
         interactive: true,
         theme: 'bloki',
     });
+
+    await refreshFriendList();
+});
+
+async function refreshFriendList() {
+    const req = await get('/id/api/my-friends');
+    const data = await req.json();
+
+    let requestsList = '';
+    const outgoingRequestTemplate = document.getElementById('outgoingFriendRequestTemplate');
+    const incomingRequestTemplate = document.getElementById('incomingFriendRequestTemplate');
+    const renderTemplate = (incoming, displayName, userName) => {
+        if (incoming) {
+            return incomingRequestTemplate.innerHTML
+                .replaceAll('[[ displayname ]]', escapeHTML(displayName))
+                .replaceAll('[[ username ]]', escapeHTML(userName));
+        } else {
+            return outgoingRequestTemplate.innerHTML
+                .replaceAll('[[ displayname ]]', escapeHTML(displayName))
+                .replaceAll('[[ username ]]', escapeHTML(userName));
+        }
+    };
+    data.requests.forEach(request => {
+        requestsList += renderTemplate(request.incoming, request.display_name, request.user_name);
+    });
+    document.getElementById('friendRequests').innerHTML = requestsList;
+}
+
+// Pick random profile picture gradients
+const gradientClasses = [
+    'bg-gradient-to-r from-purple-500 to-pink-500',
+    'bg-gradient-to-r from-green-500 to-yellow-500',
+    'bg-gradient-to-r from-cyan-500 to-red-500',
+];
+
+function randomGradient() {
+    return gradientClasses[Math.floor(Math.random() * gradientClasses.length)];
+}
+
+document.querySelectorAll('.bg-gradient-profile').forEach(el => {
+    el.classList += ' ' + randomGradient();
 });
 
 // Adding friends
