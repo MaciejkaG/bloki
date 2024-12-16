@@ -628,6 +628,10 @@ video {
   z-index: 20;
 }
 
+.m-0 {
+  margin: 0px;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -667,6 +671,10 @@ video {
   margin-top: 1.5rem;
 }
 
+.mt-auto {
+  margin-top: auto;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -687,6 +695,10 @@ video {
   display: none;
 }
 
+.aspect-\[\.5\] {
+  aspect-ratio: .5;
+}
+
 .aspect-\[1\.5\] {
   aspect-ratio: 1.5;
 }
@@ -697,6 +709,14 @@ video {
 
 .aspect-square {
   aspect-ratio: 1 / 1;
+}
+
+.aspect-\[1\.8\] {
+  aspect-ratio: 1.8;
+}
+
+.aspect-\[1\.6\] {
+  aspect-ratio: 1.6;
 }
 
 .h-32 {
@@ -717,10 +737,6 @@ video {
 
 .h-8 {
   height: 2rem;
-}
-
-.h-\[800px\] {
-  height: 800px;
 }
 
 .h-\[90vh\] {
@@ -755,12 +771,16 @@ video {
   width: 30rem;
 }
 
-.w-\[400px\] {
-  width: 400px;
-}
-
 .w-full {
   width: 100%;
+}
+
+.w-\[40rem\] {
+  width: 40rem;
+}
+
+.w-\[35rem\] {
+  width: 35rem;
 }
 
 .max-w-3xl {
@@ -785,6 +805,10 @@ video {
 
 .flex-\[3\] {
   flex: 3;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
 }
 
 .transform {
@@ -821,6 +845,10 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
 }
 
 .gap-3 {
@@ -889,12 +917,25 @@ video {
   border-bottom-width: 1px;
 }
 
+.border-l-4 {
+  border-left-width: 4px;
+}
+
+.border-l-2 {
+  border-left-width: 2px;
+}
+
 .border-transparent {
   border-color: transparent;
 }
 
 .border-white\/10 {
   border-color: rgb(255 255 255 / 0.1);
+}
+
+.border-l-zinc-500 {
+  --tw-border-opacity: 1;
+  border-left-color: rgb(113 113 122 / var(--tw-border-opacity, 1));
 }
 
 .bg-black\/50 {
@@ -920,6 +961,16 @@ video {
 
 .bg-zinc-900\/95 {
   background-color: rgb(24 24 27 / 0.95);
+}
+
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity, 1));
+}
+
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
 }
 
 .bg-gradient-to-br {
@@ -1009,6 +1060,10 @@ video {
      object-fit: cover;
 }
 
+.p-0 {
+  padding: 0px;
+}
+
 .p-1 {
   padding: 0.25rem;
 }
@@ -1057,6 +1112,10 @@ video {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+
+.pt-16 {
+  padding-top: 4rem;
 }
 
 .text-left {
@@ -1289,9 +1348,7 @@ h3 {
 }
 
 .tippy-box[data-theme~='bloki'] {
-  border-radius: 0.375rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(23 23 23 / var(--tw-bg-opacity, 1));
+  background-color: rgb(24 24 27 / 95%);
 }
 
 /* main menu styles */

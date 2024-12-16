@@ -60,7 +60,7 @@ h3 {
 }
 
 .tippy-box[data-theme~='bloki'] {
-    @apply bg-neutral-900 rounded-md;
+    background-color: theme(colors.zinc.900 / 95%);
 }
 
 /* main menu styles */

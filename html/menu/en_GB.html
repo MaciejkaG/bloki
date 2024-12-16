@@ -26,31 +26,40 @@
     
     <link rel="stylesheet" href="/assets/css/tailwind.css">
 </head>
-<body>
+<body class="m-0 p-0">
     <!-- Background -->
     <div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none bg-gradient-to-br from-gray-900 via-black to-gray-900"></div>
 
     <!-- Add friend dialogue -->
     <div id="addFriendsDialogueContainer" class="dialogueContainer fixed top-0 left-0 w-full h-full bg-gray-950/40 backdrop-blur-sm z-20 flex items-center justify-center">
         <!-- Box -->
-        <div id="addFriendsDialogueWindow" class="bg-zinc-900/95 shadow-xl rounded-xl w-[30rem] aspect-[1.5] p-4">
-            <h2>Add friends</h2>
-            <div class="w-full h-full flex flex-col items-center justify-center">
-                <div class="text-left w-64 mx-auto my-4">
-                    <span class="block ml-1 text-white/40 text-sm">Friend's username</span>
-                    <input type="text" placeholder="john.doe_" id="addFriendUsernameInput"
-                        class="rounded-xl outline-none bg-white/10 px-2 py-1 w-full transition-all border-2 border-transparent focus:border-white/20">
-                </div>
-                <div id="addFriendsProfilePreview" class="flex flex-col items-stretch">
-                    <div class="flex gap-4">
-                        <div class="my-6 w-16 aspect-square rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover"></div>
-                        <div class="flex justify-center flex-col">
-                            <span id="addFriendsProfilePreviewDisplayName" class="text-2xl font-semibold"></span>
-                            <span id="addFriendsProfilePreviewUsername" class="text-base font-thin"></span>
+        <div id="addFriendsDialogueWindow" class="bg-zinc-900/95 shadow-xl rounded-xl w-[40rem] aspect-[1.8] p-4">
+            <div class="flex gap-4 h-full">
+                <div class="flex-1 flex flex-col items-center">
+                    <h3 class="text-center">Add friends</h3>
+                    <div class="text-left w-full mx-auto my-4">
+                        <span class="block ml-1 text-white/40 text-sm">Friend's username</span>
+                        <input type="text" placeholder="john.doe_" id="addFriendUsernameInput"
+                            class="rounded-xl outline-none bg-white/10 px-2 py-1 w-full transition-all border-2 border-transparent focus:border-white/20">
+                    </div>
+                    <div id="addFriendsProfilePreview" class="flex flex-col items-stretch mt-auto mb-4">
+                        <div class="flex gap-4">
+                            <div class="my-6 w-16 aspect-square rounded-full bg-gradient-to-r from-purple-500 to-pink-500 bg-cover">
+                            </div>
+                            <div class="flex justify-center flex-col">
+                                <span id="addFriendsProfilePreviewDisplayName" class="text-2xl font-semibold"></span>
+                                <span id="addFriendsProfilePreviewUsername" class="text-base font-thin"></span>
+                            </div>
+                        </div>
+                        <div>
+                            <button id="sendFriendInviteButton" class="w-full px-3 py-1">Invite to friends</button>
                         </div>
                     </div>
-                    <div>
-                        <button id="sendFriendInviteButton" class="w-full px-3 py-1">Invite to friends</button>
+                </div>
+                <div class="flex-1 border-l-2 border-l-zinc-500">
+                    <h3 class="text-center">Friend requests</h3>
+                    <div class="flex">
+                        
                     </div>
                 </div>
             </div>
@@ -81,9 +90,9 @@
         <div class="flex-[3]">
     
         </div>
-        <div class="flex-[2] flex items-center justify-center"> <!-- Board area container -->
+        <div class="flex-[2] flex items-center justify-center pt-16"> <!-- Board area container -->
             <!-- Board with border -->
-            <div class="relative w-[400px] h-[800px] rounded-[5px] overflow-hidden ">
+            <div class="relative h-70vh aspect-[.5] rounded-[5px] overflow-hidden ">
                 <!-- Canvas for blocks -->
                 <canvas width="400" height="800" class="w-full h-full" id="boardCanvas"></canvas>
     
